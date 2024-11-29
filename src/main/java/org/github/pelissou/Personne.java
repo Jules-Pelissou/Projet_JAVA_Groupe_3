@@ -37,4 +37,8 @@ public class Personne {
     public Case getPosition() {
         return position;
     }
+
+    public void setPosition(Case position) {
+        this.position = position;
+    }
 }

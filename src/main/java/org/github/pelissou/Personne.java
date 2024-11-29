@@ -20,8 +20,7 @@ public class Personne {
         this.nbVaccin = 0;
         this.typePersonne = typePersonne;
         this.etat = etat;
-        this.x = x;
-        this.y = y;
+        this.position = new Case(x, y);
     }
 
     public void estGuerie() {
@@ -37,12 +36,5 @@ public class Personne {
 
     public Case getPosition() {
         return position;
-    }
-    public double getX() {
-        return this.x;
-    }
-
-    public double getY() {
-        return this.y;
     }
 }

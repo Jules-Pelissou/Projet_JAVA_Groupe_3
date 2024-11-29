@@ -11,6 +11,7 @@ public class Personne {
     private Etat etat;
     private double x;
     private double y;
+    protected Case position;
     private Random rdm = new Random();
 
     // Constructeur
@@ -32,5 +33,9 @@ public class Personne {
         } else {
             this.typePersonne = typePersonneInit;
         }
+    }
+
+    public Case getPosition() {
+        return position;
     }
 }

@@ -2,6 +2,7 @@ package org.github.pelissou;
 
 import java.sql.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 public class Population {
@@ -38,6 +39,14 @@ public class Population {
         for (int i = 0; i < nbPersonne; i++) {
             Personnne personne = new Personne(){}
         }
+    }
+
+    public HashSet<Case> getOccupation() {
+        HashSet<Case> occupiedCases = new HashSet<>();
+        for (Personne personne : personnes) {
+            occupiedCases.add(personne.getPosition());
+        }
+        return occupiedCases;
     }
 
 }

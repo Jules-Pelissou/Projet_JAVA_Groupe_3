@@ -6,8 +6,9 @@ public class Epidemie {
     private float probaDeces;
     private double distanceMax;
     private static int cycles;
+    private static double tauxTransmission;
 
-    public Epidemie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces, double distanceMax, float tauxTransmission, int cycles) {
+    public Epidemie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces, double distanceMax, int cycles) {
         this.tauxTransmissionIni = tauxTransmissionIni;
         this.periodeIncubation = periodeIncubation;
         this.probaGuerison = probaGuerison;
@@ -20,7 +21,7 @@ public class Epidemie {
         return cycles;
     }
 
-    public double calculTauxTransmission(Case c1, Case c2) {
+    public double calculProbaContagion(Case c1, Case c2) {
         return Math.max(0, tauxTransmissionIni*(1-Population.calculDistance(c1, c2)/distanceMax));
     }
 }

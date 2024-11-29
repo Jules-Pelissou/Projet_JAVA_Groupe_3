@@ -18,27 +18,53 @@ public class Population {
 
     // Constructeur
 
-    public Population(int tailleLigne, int tailleColonne, int nbPersonne, int tauxAccesVaccin, int tauxSensible, int taux) {
+    public Population(int tailleLigne, int tailleColonne, int nbPersonne) {
 
         this.personnes = new ArrayList<>();
 
         // Créé un tableau avec les taux (%ages) de personnes de chaque type à avoir
         this.tauxAccesVaccin = new Map<TypePersonne, Interger>();
 
+        // Défini le pourcentage global
+        int pourcentage = 100;
+
+        // Pour chaque type de personnes => créé un pourcentage random de type de personnes
+        for (TypePersonne t : TypePersonne.values()){
+            int random = Random();
+            int pourcentageRdm = random.nextInt(pourcentage);
+            tauxTypePersonne.put(t, pourcentageRdm);
+            pourcentage -= pourcentageRdm;
+        }
+
+        /*
+         *   Pour chaques valeurs dans le dictionnaire TypePersonnes / pourcentage
+         *   => Créer le bon nombre de personnes
+         */
+
+        assert tauxTypePersonne != null;
+        for ( Map.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
+            // Récupère le nombre de personnes demandées pour chaque type de personnes
+            int nbPersSpe = (entry.getValue() * nbPersonne) / 100;
+            // Changement des valeurs du taux type de personnes pour les nombres de personnes
+            entry.setValue(nbPersSpe);
+        }
+
+        // Créé toutes les personnes avec des valeurs par défaut, sauf pour le Type de Personnes
+
+        for ( Map.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
+            Personne p = new Personne(false,entry.getKey(), Etat.NEUTRE, 0,0);
+            personnes.add(p);
+        }
+
+        // Modifier l'accès au vaccin
+
+        //for (Personne p: personnes){
+        //
+        //}
+
         this.tailleLigne = tailleLigne;
         this.tailleColonne = tailleColonne;
-
-        foreach (TypePersonne t : TypePersonne.values()){
-            int random = Random();
-            int pourcentage = random.nextInt(100);
-            
-        }
-
-        this.tauxAcces
-
-        for (int i = 0; i < nbPersonne; i++) {
-            Personnne personne = new Personne(){}
-        }
+        
     }
 
     public HashSet<Case> getOccupation() {

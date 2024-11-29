@@ -1,7 +1,7 @@
 package org.github.pelissou;
 public class Epidemie {
-    private float tauxTransmissionIni;
-    private int periodeIncubation;
+    protected float tauxTransmissionIni;
+    protected int periodeIncubation;
     private float probaGuerison;
     private float probaDeces;
     private double distanceMax;

@@ -3,7 +3,8 @@ package org.github.pelissou;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.Random;
 
 public class Population {
 
@@ -13,7 +14,7 @@ public class Population {
     private int tailleLigne;
     private int tailleColonne;
     private int tauxAccesVaccin;
-    private Map<TypePersonne, Integer> tauxTypePersonne;
+    private HashMap<TypePersonne, Integer> tauxTypePersonne;
 
 
     // Constructeur
@@ -23,14 +24,14 @@ public class Population {
         this.personnes = new ArrayList<>();
 
         // Créé un tableau avec les taux (%ages) de personnes de chaque type à avoir
-        this.tauxAccesVaccin = new Map<TypePersonne, Interger>();
+        this.tauxTypePersonne = new HashMap<TypePersonne, Integer>();
 
         // Défini le pourcentage global
         int pourcentage = 100;
 
         // Pour chaque type de personnes => créé un pourcentage random de type de personnes
         for (TypePersonne t : TypePersonne.values()){
-            int random = Random();
+            Random random = new Random();
             int pourcentageRdm = random.nextInt(pourcentage);
             tauxTypePersonne.put(t, pourcentageRdm);
             pourcentage -= pourcentageRdm;
@@ -42,7 +43,7 @@ public class Population {
          */
 
         assert tauxTypePersonne != null;
-        for ( Map.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
+        for ( HashMap.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
             // Récupère le nombre de personnes demandées pour chaque type de personnes
             int nbPersSpe = (entry.getValue() * nbPersonne) / 100;
             // Changement des valeurs du taux type de personnes pour les nombres de personnes
@@ -51,7 +52,7 @@ public class Population {
 
         // Créé toutes les personnes avec des valeurs par défaut, sauf pour le Type de Personnes
 
-        for ( Map.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
+        for ( HashMap.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
             Personne p = new Personne(false,entry.getKey(), Etat.NEUTRE, 0,0);
             personnes.add(p);
         }

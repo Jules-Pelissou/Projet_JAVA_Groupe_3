@@ -4,10 +4,10 @@ public class Epidemie {
     private int periodeIncubation;
     private float probaGuerison;
     private float probaDeces;
-    private int distanceMax;
+    private double distanceMax;
     private float probaComtamination;
 
-    public Epidemie(float tauxTransmission, int periodeIncubation, float probaGuerison, float probaDeces, int distanceMax, float probaComtamination) {
+    public Epidemie(float tauxTransmission, int periodeIncubation, float probaGuerison, float probaDeces, double distanceMax, float probaComtamination) {
         this.tauxTransmission = tauxTransmission;
         this.periodeIncubation = periodeIncubation;
         this.probaGuerison = probaGuerison;
@@ -15,7 +15,7 @@ public class Epidemie {
         this.distanceMax = distanceMax;
         this.probaComtamination = probaComtamination;
     } 
-
+    
     public float getTauxTransmission() {
         return tauxTransmission;
     }

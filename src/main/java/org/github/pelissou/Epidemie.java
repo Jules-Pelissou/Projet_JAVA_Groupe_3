@@ -1,4 +1,5 @@
 package org.github.pelissou;
+
 public class Epidemie {
     protected float tauxTransmissionIni;
     protected int periodeIncubation;
@@ -8,20 +9,21 @@ public class Epidemie {
     private static int cycles;
     private static double tauxTransmission;
 
-    public Epidemie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces, double distanceMax, int cycles) {
+    public Epidemie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces,
+            double distanceMax, int cycles) {
         this.tauxTransmissionIni = tauxTransmissionIni;
         this.periodeIncubation = periodeIncubation;
         this.probaGuerison = probaGuerison;
         this.probaDeces = probaDeces;
         this.distanceMax = distanceMax;
         Epidemie.cycles = cycles;
-    } 
+    }
 
     public static int getCycles() {
         return cycles;
     }
 
     public double calculProbaContagion(Case c1, Case c2) {
-        return Math.max(0, tauxTransmissionIni*(1-Population.calculDistance(c1, c2)/distanceMax));
+        return Math.max(0, tauxTransmissionIni * (1 - Population.calculDistance(c1, c2) / distanceMax));
     }
 }

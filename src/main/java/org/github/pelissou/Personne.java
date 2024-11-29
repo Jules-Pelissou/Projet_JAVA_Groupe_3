@@ -12,7 +12,7 @@ public class Personne {
 
     // Constructeur
 
-    public Personne(accesVaccin,typePersonne,etat,environnement) {
+    public Personne(boolean accesVaccin, TypePersonne typePersonne,Etat etat, Environnement environnement) {
         this.accesVaccin = accesVaccin;
         this.nbVaccin = 0;
         this.typePersonne = typePersonne;

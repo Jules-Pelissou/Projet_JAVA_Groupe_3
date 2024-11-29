@@ -48,7 +48,7 @@ public class Population {
         }
         return occupiedCases;
     }
-    public double calculDistance(Case c1, Case c2) {
+    public static double calculDistance(Case c1, Case c2) {
         return Math.sqrt(Math.pow(c2.getLigne() - c1.getLigne(), 2) + Math.pow(c2.getColonne() - c1.getColonne(), 2));
     }
 

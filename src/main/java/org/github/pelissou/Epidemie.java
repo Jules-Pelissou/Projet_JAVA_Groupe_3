@@ -14,7 +14,7 @@ public class Epidemie {
         this.probaGuerison = probaGuerison;
         this.probaDeces = probaDeces;
         this.distanceMax = distanceMax;
-        this.cycles = cycles;
+        Epidemie.cycles = cycles;
     } 
     
     public float getTauxTransmission() {

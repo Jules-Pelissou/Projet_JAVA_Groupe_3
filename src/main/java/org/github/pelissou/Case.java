@@ -1,20 +1,20 @@
 package org.github.pelissou;
 
 class Case {
-    private int ligne;
-    private int colonne;
+    private double ligne;
+    private double colonne;
 
-    public Case(int ligne, int colonne) {
+    public Case(double ligne, double colonne) {
         this.ligne = ligne;
         this.colonne = colonne;
     }
 
     // Getters
-    public int getLigne() {
+    public double getLigne() {
         return ligne;
     }
 
-    public int getColonne() {
+    public double getColonne() {
         return colonne;
     }
 

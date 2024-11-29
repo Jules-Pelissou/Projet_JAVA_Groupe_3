@@ -5,7 +5,7 @@ public class Epidemie {
     private float probaGuerison;
     private float probaDeces;
     private double distanceMax;
-    private float tauxTransmission;
+    protected float tauxTransmission;
     private static int cycles;
 
     public Epidemie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces, double distanceMax, float tauxTransmission, int cycles) {

@@ -48,6 +48,17 @@ public class Population {
         }
         return occupiedCases;
     }
+
+    public void positionnerPersonne(){
+        for (Personne personne : personnes){
+            Case position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
+            while (getOccupation().contains(position)){
+                position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
+            }
+            personne.setPosition(position);
+        }
+    }
+
     public static double calculDistance(Case c1, Case c2) {
         return Math.sqrt(Math.pow(c2.getLigne() - c1.getLigne(), 2) + Math.pow(c2.getColonne() - c1.getColonne(), 2));
     }

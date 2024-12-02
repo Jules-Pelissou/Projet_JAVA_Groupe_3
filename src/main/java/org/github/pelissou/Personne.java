@@ -26,12 +26,11 @@ public class Personne {
     public void estGuerie() {
         int cyclesRemission = rdm.nextInt(Epidemie.getCycles());
         TypePersonne typePersonneInit = this.typePersonne;
-        if (this.etat == Etat.GUERIE && cyclesRemission != 0) {
+        while (this.etat == Etat.GUERIE && cyclesRemission > 0) {
             this.typePersonne = TypePersonne.RESISTANTE;
             cyclesRemission -= 1;
-        } else {
-            this.typePersonne = typePersonneInit;
         }
+        this.typePersonne = typePersonneInit;
     }
 
     public Case getPosition() {

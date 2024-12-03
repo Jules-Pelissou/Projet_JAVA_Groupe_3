@@ -44,4 +44,8 @@ public class Personne {
     public void setAccesVaccin(boolean accesVaccin) {
         this.accesVaccin = accesVaccin;
     }
+
+    public void setEtat(Etat etat) {
+        this.etat = etat;
+    }
 }

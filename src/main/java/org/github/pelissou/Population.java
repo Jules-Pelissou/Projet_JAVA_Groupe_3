@@ -1,10 +1,7 @@
 package org.github.pelissou;
 
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class Population {
 
@@ -14,35 +11,49 @@ public class Population {
     private int tailleLigne;
     private int tailleColonne;
     private int tauxAccesVaccin;
+    private int tauxMalade;
     private HashMap<TypePersonne, Integer> tauxTypePersonne;
 
 
     // Constructeur
 
-    public Population(int tailleLigne, int tailleColonne, int nbPersonne) {
+    public Population(int tailleLigne, int tailleColonne, int nbPersonne, int tauxAccesVaccin, int tauxMalade) {
+
+        // Défini les pourcentages globaux
+        int pourcentageType = 100;
+        int pourcentageEtat = 100;
+        int pourcentageVaccin = 100;
+
+        // Création du nombre de personnes pour les pourcentages de Malades
+        int nbPersonnesMalades = (pourcentageEtat * nbPersonne) / 100;
+        int nbPersonnesAccesVaccin = (pourcentageVaccin * nbPersonne) / 100;
 
         this.personnes = new ArrayList<>();
+
+        // Création d'un tableau avec en valeur tous les états et en valeur un Array de personnes
+        // Ce tableau permet d'attribuer les accès au vaccin et les taux de malades
+        HashMap<TypePersonne, ArrayList<Personne>> personneParType = new HashMap<>();
+        for (TypePersonne typePersonne : TypePersonne.values()) {
+            personneParType.put(typePersonne, new ArrayList<Personne>());
+        }
+
 
         // Créé un tableau avec les taux (%ages) de personnes de chaque type à avoir
         this.tauxTypePersonne = new HashMap<TypePersonne, Integer>();
 
-        // Défini le pourcentage global
-        int pourcentage = 100;
-
-        // Pour chaque type de personnes => créé un pourcentage random de type de personnes
+        // Pour chaque type de personnes => créé un pourcentageType random de type de personnes
         for (TypePersonne t : TypePersonne.values()){
             Random random = new Random();
-            int pourcentageRdm = random.nextInt(pourcentage);
-            tauxTypePersonne.put(t, pourcentageRdm);
-            pourcentage -= pourcentageRdm;
+            int pourcentageTypeRdm = random.nextInt(pourcentageType);
+            tauxTypePersonne.put(t, pourcentageTypeRdm);
+            pourcentageType -= pourcentageTypeRdm;
         }
 
         /*
-         *   Pour chaques valeurs dans le dictionnaire TypePersonnes / pourcentage
+         *   Pour chaques valeurs dans le dictionnaire TypePersonnes / pourcentageType
          *   => Créer le bon nombre de personnes
          */
 
-        assert tauxTypePersonne != null;
         for ( HashMap.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
             // Récupère le nombre de personnes demandées pour chaque type de personnes
             int nbPersSpe = (entry.getValue() * nbPersonne) / 100;
@@ -51,17 +62,34 @@ public class Population {
         }
 
         // Créé toutes les personnes avec des valeurs par défaut, sauf pour le Type de Personnes
+        // Toutes les personnes créées sont mises dans les tableaux du Dictionnaire (personneParType)
+        
+        for (TypePersonne typePersonne : TypePersonne.values()) {
+            personneParType.put(typePersonne, new ArrayList<Personne>());
+        }
 
         for ( HashMap.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
             Personne p = new Personne(false,entry.getKey(), Etat.NEUTRE, 0,0);
-            personnes.add(p);
+            personneParType.get(entry.getKey()).add(p);
         }
 
-        // Modifier l'accès au vaccin
+        // Ici personneParType contient logiquement toutes les personnes créées triées par type de personnes
 
-        //for (Personne p: personnes){
-        //
-        //}
+        // Ajout des accès aux vaccins
+        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()){
+            for (int i = 0; i < nbPersonnesAccesVaccin/4; i++) {
+                int index = (int)(Math.random() * entry.getValue().size());
+                entry.getValue().get(index).setAccesVaccin(true);
+            }
+        }
+
+        // Ajout des états
+        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
+            for (int i = 0; i < nbPersonnesMalades /3; i++) {
+                int index = (int)(Math.random() * entry.getValue().size());
+                entry.getValue().get(index).setEtat(Etat.MALADE);
+            }
+        }
 
         this.tailleLigne = tailleLigne;
         this.tailleColonne = tailleColonne;

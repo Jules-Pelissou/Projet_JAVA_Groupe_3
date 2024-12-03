@@ -63,7 +63,7 @@ public class Population {
 
         // Créé toutes les personnes avec des valeurs par défaut, sauf pour le Type de Personnes
         // Toutes les personnes créées sont mises dans les tableaux du Dictionnaire (personneParType)
-        
+
         for (TypePersonne typePersonne : TypePersonne.values()) {
             personneParType.put(typePersonne, new ArrayList<Personne>());
         }
@@ -88,6 +88,14 @@ public class Population {
             for (int i = 0; i < nbPersonnesMalades /3; i++) {
                 int index = (int)(Math.random() * entry.getValue().size());
                 entry.getValue().get(index).setEtat(Etat.MALADE);
+            }
+        }
+
+        // Ajout de toute la population dans une même liste
+
+        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
+            for (Personne p : entry.getValue()) {
+                personnes.add(p);
             }
         }
 

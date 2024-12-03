@@ -24,7 +24,7 @@ public class Personne {
     }
 
     public void estGuerie() {
-        int cyclesRemission = rdm.nextInt(Epidemie.getCycles());
+        int cyclesRemission = rdm.nextInt(Maladie.getCycles());
         TypePersonne typePersonneInit = this.typePersonne;
         while (this.etat == Etat.GUERIE && cyclesRemission > 0) {
             this.typePersonne = TypePersonne.RESISTANTE;
@@ -39,5 +39,9 @@ public class Personne {
 
     public void setPosition(Case position) {
         this.position = position;
+    }
+
+    public void setAccesVaccin(boolean accesVaccin) {
+        this.accesVaccin = accesVaccin;
     }
 }

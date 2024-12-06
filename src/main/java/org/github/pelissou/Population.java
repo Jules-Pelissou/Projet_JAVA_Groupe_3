@@ -68,9 +68,11 @@ public class Population {
             personneParType.put(typePersonne, new ArrayList<Personne>());
         }
 
-        for ( HashMap.Entry<TypePersonne, Integer> entry: tauxTypePersonne.entrySet()){
-            Personne p = new Personne(false,entry.getKey(), Etat.NEUTRE, 0,0);
-            personneParType.get(entry.getKey()).add(p);
+        for (HashMap.Entry<TypePersonne, Integer> entry : tauxTypePersonne.entrySet()) {
+            for (int i = 0; i < entry.getValue(); i++) {
+                Personne p = new Personne(false, entry.getKey(), Etat.NEUTRE, 0, 0);
+                personneParType.get(entry.getKey()).add(p);
+            }
         }
 
         // Ici personneParType contient logiquement toutes les personnes créées triées par type de personnes
@@ -94,15 +96,15 @@ public class Population {
         // Ajout de toute la population dans une même liste
 
         for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
-            for (Personne p : entry.getValue()) {
-                personnes.add(p);
-            }
+            personnes.addAll(entry.getValue());
         }
 
         this.tailleLigne = tailleLigne;
         this.tailleColonne = tailleColonne;
         
     }
+    // Fin du constructeur
+
 
     public HashSet<Case> getOccupation() {
         HashSet<Case> occupiedCases = new HashSet<>();
@@ -124,6 +126,16 @@ public class Population {
 
     public static double calculDistance(Case c1, Case c2) {
         return Math.sqrt(Math.pow(c2.getLigne() - c1.getLigne(), 2) + Math.pow(c2.getColonne() - c1.getColonne(), 2));
+    }
+
+    // Override méthode toString
+    @Override
+    public String toString(){
+        String result = "";
+        for (Personne personne : personnes){
+            result+= personne.toString() + "\n";
+        }
+        return result;
     }
 
 }

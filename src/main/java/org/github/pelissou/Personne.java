@@ -48,4 +48,10 @@ public class Personne {
     public void setEtat(Etat etat) {
         this.etat = etat;
     }
+
+    // Override méthote toString
+    @Override
+    public String toString() {
+        return "Accès au vaccin : " + accesVaccin + ", nbVaccin : " + nbVaccin + ", etat : " + etat + ", TypePersonne : " + typePersonne + ", x : "+ x + ", y : " + y;
+    }
 }

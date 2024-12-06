@@ -37,6 +37,10 @@ public class Personne {
         return position;
     }
 
+    public Etat getEtat() {
+        return etat;
+    }
+
     public void setPosition(Case position) {
         this.position = position;
     }

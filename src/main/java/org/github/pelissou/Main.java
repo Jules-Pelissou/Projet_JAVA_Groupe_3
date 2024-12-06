@@ -4,6 +4,8 @@ package org.github.pelissou;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
+        Population p1 = new Population(10,10,50,50,35);
+        System.out.println(p1.getEtatPersonneLisible());
         /*
          * 3.1 Exemple de test
          * En guise de test initial, vous pourrez tenter de simuler la propagation d’un

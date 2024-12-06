@@ -128,6 +128,31 @@ public class Population {
         return Math.sqrt(Math.pow(c2.getLigne() - c1.getLigne(), 2) + Math.pow(c2.getColonne() - c1.getColonne(), 2));
     }
 
+    //Getters
+
+    public HashMap<Etat, Integer> getEtatPersonnes() {
+        HashMap<Etat, Integer> comptePersonnes = new HashMap<Etat, Integer>();
+
+        for (Etat etat : Etat.values()) {
+            comptePersonnes.put(etat, 0);
+        }
+        for (Personne personne : personnes) {
+            comptePersonnes.put(personne.getEtat(), comptePersonnes.get(personne.getEtat()) + 1);
+        }
+        return comptePersonnes;
+    }
+
+    public String getEtatPersonneLisible(){
+        HashMap<Etat, Integer> comptePersonnes = getEtatPersonnes();
+        String result = "";
+        for (Etat etat : comptePersonnes.keySet()) {
+            result += etat.toString() + " " + comptePersonnes.get(etat) + "\n";
+        }
+        return result;
+    }
+
+
+
     // Override méthode toString
     @Override
     public String toString(){

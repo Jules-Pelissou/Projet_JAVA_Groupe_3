@@ -3642,7 +3642,7 @@
 											"top": 756,
 											"width": 251.25634765625,
 											"height": 13,
-											"text": "-cycleMax: int",
+											"text": "-nbCycles: int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -6893,7 +6893,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGTjR8jUg+xVG8="
 							},
-							"name": "cycleMax",
+							"name": "nbCycles",
 							"visibility": "private",
 							"type": "int"
 						},

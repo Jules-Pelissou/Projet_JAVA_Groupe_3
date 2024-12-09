@@ -13,14 +13,26 @@ public class Simulation {
         this.dmax = dmax;
     }
 
-    public void lancerSimulation(int nbCycles) {
+    public void lancerSimulation(int nbCycles, boolean campagneVaccination, int cycleVaccination, int doses) {
         for (int i = 0; i < nbCycles; i++) {
             cycleActuel++;
             System.out.println("Cycle " + cycleActuel);
+
+            // Campagne de vaccination si activée et au bon cycle
+            if (campagneVaccination && cycleActuel == cycleVaccination) {
+                population.campagneVaccination(doses);
+                System.out.println("Campagne de vaccination appliquée (doses : " + doses + ").");
+            }
+
+            // Propagation de la maladie
             population.propagerMaladie(maladie, dmax);
+
+            // Mise à jour de l'état des individus
             for (Individu individu : population.getIndividus()) {
                 individu.mettreAJourEtat(maladie);
             }
+
+            // Afficher les statistiques
             afficherStatistiques();
         }
     }
@@ -30,8 +42,9 @@ public class Simulation {
         long infectes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.INFECTE).count();
         long gueris = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.GUERI).count();
         long decedes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.DECEDE).count();
+        long immunises = population.getIndividus().stream().filter(Individu::isImmunise).count();
 
-        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes);
+        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes + ", Immunisés : " + immunises);
     }
 }
 

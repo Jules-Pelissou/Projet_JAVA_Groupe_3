@@ -9,8 +9,11 @@ public class Individu {
     protected int cyclesResistance;
     private Comportement comportement;
     private int dureeResistanceSpecifique;
+    private boolean accesVaccination;
+    private int dosesReçues;
+    private boolean immunise;
 
-    public Individu(int id, double x, double y) {
+    public Individu(int id, double x, double y, boolean accesVaccination) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -18,6 +21,9 @@ public class Individu {
         this.cyclesResistance = 0;
         this.dureeResistanceSpecifique = (int) (Math.random() * 5 + 1); // Durée aléatoire entre 1 et 5 cycles
         this.comportement = Comportement.NONE; // Pas de comportement spécifique
+        this.accesVaccination = accesVaccination;
+        this.dosesReçues = 0;
+        this.immunise = false;
     }
 
     public double calculDistance(Individu autre) {
@@ -57,6 +63,29 @@ public class Individu {
             default:
                 break;
         }
+    }
+
+    public void vacciner(int doses) {
+        if (!accesVaccination || immunise) return;
+
+        dosesReçues += doses;
+        if (dosesReçues >= 2 || doses == 1) { // Immunité active selon le type de vaccination
+            immunise = true;
+            etat = Etat.GUERI; // Rendu résistant immédiatement
+            cyclesResistance = Integer.MAX_VALUE; // Résistance permanente
+        }
+    }
+
+    public boolean isImmunise() {
+        return immunise;
+    }
+
+    public boolean hasAccesVaccination() {
+        return accesVaccination;
+    }
+
+    public int getDosesReçues() {
+        return dosesReçues;
     }
 
     public Etat getEtat() {

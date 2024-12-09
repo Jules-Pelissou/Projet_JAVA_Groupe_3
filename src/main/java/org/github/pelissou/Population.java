@@ -13,7 +13,8 @@ public class Population {
         for (int i = 0; i < taille; i++) {
             double x = Math.random() * largeurEspace;
             double y = Math.random() * hauteurEspace;
-            individus.add(new Individu(i, x, y));
+            boolean accesVaccination = Math.random() < 0.7; // 70% des individus ont accès à la vaccination
+            individus.add(new Individu(i, x, y, accesVaccination));
         }
     }
 
@@ -40,6 +41,14 @@ public class Population {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public void campagneVaccination(int doses) {
+        for (Individu individu : individus) {
+            if (individu.hasAccesVaccination() && !individu.isImmunise()) {
+                individu.vacciner(doses);
             }
         }
     }

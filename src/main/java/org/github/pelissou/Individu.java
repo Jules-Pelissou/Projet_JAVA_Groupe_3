@@ -3,11 +3,12 @@ package org.github.pelissou;
 import java.util.Random;
 
 public class Individu {
-    private int id;
+    protected int id;
     private double x, y;
     private Etat etat;
-    private int cyclesResistance;
+    protected int cyclesResistance;
     private Comportement comportement;
+    private int dureeResistanceSpecifique;
 
     public Individu(int id, double x, double y) {
         this.id = id;
@@ -15,6 +16,7 @@ public class Individu {
         this.y = y;
         this.etat = Etat.SAIN; // Par défaut, l'individu est sain
         this.cyclesResistance = 0;
+        this.dureeResistanceSpecifique = (int) (Math.random() * 5 + 1); // Durée aléatoire entre 1 et 5 cycles
         this.comportement = Comportement.NONE; // Pas de comportement spécifique
     }
 
@@ -29,7 +31,7 @@ public class Individu {
                 // Vérifie la guérison ou le décès
                 if (random.nextDouble() < maladie.getProbaGuerison()) {
                     etat = Etat.GUERI;
-                    cyclesResistance = maladie.getDureeResistance();
+                    cyclesResistance = dureeResistanceSpecifique;
                 } else if (random.nextDouble() < maladie.getProbaDeces()) {
                     etat = Etat.DECEDE;
                 }
@@ -64,5 +66,8 @@ public class Individu {
     public void setComportement(Comportement comportement) {
         this.comportement = comportement;
     }
-}
 
+    public int getDureeResistanceSpecifique() {
+        return dureeResistanceSpecifique;
+    }
+}

@@ -27,8 +27,14 @@ public class Simulation {
         long infectes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.INFECTE).count();
         long gueris = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.GUERI).count();
         long decedes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.DECEDE).count();
-
+    
         System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes);
+    
+        System.out.println("Durées de résistance spécifiques des guéris :");
+        population.getIndividus().stream()
+                .filter(i -> i.getEtat() == Etat.GUERI)
+                .forEach(i -> System.out.println("Individu " + i.id + ": " + i.cyclesResistance + " cycles restants."));
     }
+    
 }
 

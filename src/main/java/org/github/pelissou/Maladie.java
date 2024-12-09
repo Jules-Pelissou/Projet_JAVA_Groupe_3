@@ -19,7 +19,7 @@ public class Maladie {
         this.probaDeces = probaDeces;
         this.dureeResistance = dureeResistance;
         this.variants = new ArrayList<>();
-        this.variantActuel = null; 
+        this.variantActuel = null;
     }
 
     public void ajouterVariant(Variant variant) {
@@ -28,7 +28,7 @@ public class Maladie {
 
     public void activerVariant(String nomVariant) {
         for (Variant variant : variants) {
-            if (variant.getNom().equals(nomVariant)) {
+            if (variant.getNom().equalsIgnoreCase(nomVariant)) {
                 variantActuel = variant;
                 this.tauxTransmission = variant.getTauxTransmission();
                 this.periodeIncubation = variant.getPeriodeIncubation();
@@ -59,5 +59,6 @@ public class Maladie {
         return variantActuel;
     }
 }
+
 
 

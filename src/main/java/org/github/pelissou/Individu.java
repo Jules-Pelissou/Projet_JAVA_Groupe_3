@@ -27,7 +27,14 @@ public class Individu {
     }
 
     public double calculDistance(Individu autre) {
-        return Math.sqrt(Math.pow(this.x - autre.x, 2) + Math.pow(this.y - autre.y, 2));
+        double distance = Math.sqrt(Math.pow(this.x - autre.x, 2) + Math.pow(this.y - autre.y, 2));
+
+        // Appliquer l'effet de distanciation sociale
+        if (this.comportement == Comportement.DISTANCIATION_SOCIALE || 
+            autre.comportement == Comportement.DISTANCIATION_SOCIALE) {
+            distance *= 2; // Double la distance observée
+        }
+        return distance;
     }
 
     public double probabiliteContagion(Individu autre, double p0, double dmax) {
@@ -35,7 +42,15 @@ public class Individu {
         if (distance > dmax) {
             return 0.0; // Aucune transmission au-delà de la distance maximale
         }
-        return Math.max(0, p0 * (1 - distance / dmax));
+
+        double facteurMasque = 1.0;
+        // Réduit le risque de transmission initial avec les masques
+        if (this.comportement == Comportement.PORT_DE_MASQUE || 
+            autre.comportement == Comportement.PORT_DE_MASQUE) {
+            facteurMasque = 0.5;
+        }
+
+        return Math.max(0, p0 * facteurMasque * (1 - distance / dmax));
     }
 
     public void mettreAJourEtat(Maladie maladie) {

@@ -13,7 +13,10 @@ public class Simulation {
         this.dmax = dmax;
     }
 
-    public void lancerSimulation(int nbCycles, boolean campagneVaccination, int cycleVaccination, int doses, boolean introductionVariant, int cycleIntroductionVariant, String nomVariant) {
+    public void lancerSimulation(int nbCycles, boolean campagneVaccination, int cycleVaccination, int doses, boolean introductionVariant, int cycleIntroductionVariant, String nomVariant, double pourcentageMasques, double pourcentageDistanciation) {
+        // Appliquer les comportements sociaux avant le début de la simulation
+        population.appliquerComportements(pourcentageMasques, pourcentageDistanciation);
+        
         for (int i = 0; i < nbCycles; i++) {
             cycleActuel++;
             System.out.println("Cycle " + cycleActuel);

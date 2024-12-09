@@ -52,4 +52,16 @@ public class Population {
             }
         }
     }
+
+    public void appliquerComportements(double pourcentageMasques, double pourcentageDistanciation) {
+        Random random = new Random();
+        for (Individu individu : individus) {
+            double chance = random.nextDouble();
+            if (chance < pourcentageMasques) {
+                individu.setComportement(Comportement.PORT_DE_MASQUE);
+            } else if (chance < pourcentageMasques + pourcentageDistanciation) {
+                individu.setComportement(Comportement.DISTANCIATION_SOCIALE);
+            }
+        }
+    }
 }

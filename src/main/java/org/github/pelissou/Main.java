@@ -16,7 +16,7 @@ public class Main {
         population.contaminerAleatoirement(0.2); // 20% de la population initialement infectée
 
         // Simulation avec une campagne de vaccination au 5ème cycle, en une dose
-        simulation.lancerSimulation(10, true, 5, 1, true, 5, "Delta");
+        simulation.lancerSimulation(10, true, 6, 1, true, 3, "Delta", 0.5, 0.3);
     }
 }
 

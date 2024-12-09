@@ -10,11 +10,15 @@ public class Population {
 
     public Population(int taille, double largeurEspace, double hauteurEspace) {
         individus = new ArrayList<>();
+        Random random = new Random();
+
         for (int i = 0; i < taille; i++) {
             double x = Math.random() * largeurEspace;
             double y = Math.random() * hauteurEspace;
+
+            TypePersonne type = TypePersonne.values()[random.nextInt(TypePersonne.values().length)];
             boolean accesVaccination = Math.random() < 0.7; // 70% des individus ont accès à la vaccination
-            individus.add(new Individu(i, x, y, accesVaccination));
+            individus.add(new Individu(i, x, y, type, accesVaccination));
         }
     }
 
@@ -35,7 +39,7 @@ public class Population {
             if (infecte.getEtat() == Etat.INFECTE) {
                 for (Individu autre : individus) {
                     if (autre.getEtat() == Etat.SAIN) {
-                        double probabilite = infecte.probabiliteContagion(autre, maladie.getTauxTransmission(), dmax);
+                        double probabilite = infecte.probabiliteContagion(autre, dmax);
                         if (random.nextDouble() < probabilite) {
                             autre.setEtat(Etat.INFECTE);
                         }

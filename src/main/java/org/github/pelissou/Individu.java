@@ -6,6 +6,7 @@ public class Individu {
     protected int id;
     private double x, y;
     private Etat etat;
+    private TypePersonne typePersonne;
     protected int cyclesResistance;
     private Comportement comportement;
     private int dureeResistanceSpecifique;
@@ -13,11 +14,12 @@ public class Individu {
     private int dosesReçues;
     private boolean immunise;
 
-    public Individu(int id, double x, double y, boolean accesVaccination) {
+    public Individu(int id, double x, double y, TypePersonne typePersonne, boolean accesVaccination) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.etat = Etat.SAIN; // Par défaut, l'individu est sain
+        this.typePersonne = typePersonne;
         this.cyclesResistance = 0;
         this.dureeResistanceSpecifique = (int) (Math.random() * 5 + 1); // Durée aléatoire entre 1 et 5 cycles
         this.comportement = Comportement.NONE; // Pas de comportement spécifique
@@ -37,8 +39,10 @@ public class Individu {
         return distance;
     }
 
-    public double probabiliteContagion(Individu autre, double p0, double dmax) {
+    public double probabiliteContagion(Individu autre, double dmax) {
+        double p0 = autre.typePersonne.getTauxTransmission();
         double distance = this.calculDistance(autre);
+        
         if (distance > dmax) {
             return 0.0; // Aucune transmission au-delà de la distance maximale
         }
@@ -121,5 +125,9 @@ public class Individu {
 
     public int getDureeResistanceSpecifique() {
         return dureeResistanceSpecifique;
+    }
+
+    public TypePersonne getTypePersonne() {
+        return typePersonne;
     }
 }

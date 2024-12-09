@@ -59,30 +59,34 @@ public class Individu {
 
     public void mettreAJourEtat(Maladie maladie) {
         Random random = new Random();
+    
         switch (etat) {
             case INFECTE:
                 // Vérifie la guérison ou le décès
                 if (random.nextDouble() < maladie.getProbaGuerison()) {
                     etat = Etat.GUERI;
-                    cyclesResistance = dureeResistanceSpecifique;
+                    cyclesResistance = dureeResistanceSpecifique; 
+                    typePersonne = TypePersonne.RESISTANT; // Une personne guérie devient résistante
                 } else if (random.nextDouble() < maladie.getProbaDeces()) {
                     etat = Etat.DECEDE;
                 }
                 break;
-
+    
             case GUERI:
                 // Réduit les cycles de résistance
                 if (cyclesResistance > 0) {
                     cyclesResistance--;
                 } else {
-                    etat = Etat.SAIN;
+                    etat = Etat.SAIN; // Retour à l'état sain après la période de résistance
+                    typePersonne = TypePersonne.NEUTRE; // Redevient neutre après la résistance
                 }
                 break;
-
+    
             default:
                 break;
         }
     }
+    
 
     public void vacciner(int doses) {
         if (!accesVaccination || immunise) return;

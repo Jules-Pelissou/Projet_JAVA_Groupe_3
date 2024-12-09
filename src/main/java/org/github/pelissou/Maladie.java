@@ -58,6 +58,10 @@ public class Maladie {
     public Variant getVariantActuel() {
         return variantActuel;
     }
+
+    public int getDureeResistance() {
+        return dureeResistance;
+    }
 }
 
 

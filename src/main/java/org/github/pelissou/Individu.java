@@ -89,13 +89,20 @@ public class Individu {
     
 
     public void vacciner(int doses) {
-        if (!accesVaccination || immunise) return;
+        if (!accesVaccination || immunise) return; // Pas d'effet si pas d'accès ou déjà immunisé
 
         dosesReçues += doses;
-        if (dosesReçues >= 2 || doses == 1) { // Immunité active selon le type de vaccination
+
+        if (dosesReçues == 1) {
+            if (typePersonne == TypePersonne.SENSIBLE || typePersonne == TypePersonne.NEUTRE) {
+                typePersonne = TypePersonne.RESISTANT; // Rend résistants les sensibles et neutres
+            }
+        }
+
+        if (dosesReçues >= 2 || doses == 1) { // Immunisation complète pour 2 doses ou vaccination en une dose
             immunise = true;
-            etat = Etat.GUERI; // Rendu résistant immédiatement
-            cyclesResistance = Integer.MAX_VALUE; // Résistance permanente
+            typePersonne = TypePersonne.RESISTANT; // Toutes les personnes deviennent résistantes
+            etat = Etat.GUERI; // Immunisées, elles sont considérées guéries
         }
     }
 

@@ -4,17 +4,20 @@ public class Simulation {
     private Population population;
     private Maladie maladie;
     private int cycleActuel;
+    private double dmax;
 
-    public Simulation(Population population, Maladie maladie) {
+    public Simulation(Population population, Maladie maladie, double dmax) {
         this.population = population;
         this.maladie = maladie;
         this.cycleActuel = 0;
+        this.dmax = dmax;
     }
 
     public void lancerSimulation(int nbCycles) {
         for (int i = 0; i < nbCycles; i++) {
             cycleActuel++;
             System.out.println("Cycle " + cycleActuel);
+            population.propagerMaladie(maladie, dmax);
             for (Individu individu : population.getIndividus()) {
                 individu.mettreAJourEtat(maladie);
             }
@@ -27,14 +30,9 @@ public class Simulation {
         long infectes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.INFECTE).count();
         long gueris = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.GUERI).count();
         long decedes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.DECEDE).count();
-    
+
         System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes);
-    
-        System.out.println("Durées de résistance spécifiques des guéris :");
-        population.getIndividus().stream()
-                .filter(i -> i.getEtat() == Etat.GUERI)
-                .forEach(i -> System.out.println("Individu " + i.id + ": " + i.cyclesResistance + " cycles restants."));
     }
-    
 }
+
 

@@ -3,6 +3,8 @@ package org.github.pelissou;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.Random;
+
 public class Population {
     private List<Individu> individus;
 
@@ -25,5 +27,20 @@ public class Population {
             individus.get(i).setEtat(Etat.INFECTE);
         }
     }
-}
 
+    public void propagerMaladie(Maladie maladie, double dmax) {
+        Random random = new Random();
+        for (Individu infecte : individus) {
+            if (infecte.getEtat() == Etat.INFECTE) {
+                for (Individu autre : individus) {
+                    if (autre.getEtat() == Etat.SAIN) {
+                        double probabilite = infecte.probabiliteContagion(autre, maladie.getTauxTransmission(), dmax);
+                        if (random.nextDouble() < probabilite) {
+                            autre.setEtat(Etat.INFECTE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

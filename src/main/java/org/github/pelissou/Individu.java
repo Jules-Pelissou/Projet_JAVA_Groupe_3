@@ -24,6 +24,14 @@ public class Individu {
         return Math.sqrt(Math.pow(this.x - autre.x, 2) + Math.pow(this.y - autre.y, 2));
     }
 
+    public double probabiliteContagion(Individu autre, double p0, double dmax) {
+        double distance = this.calculDistance(autre);
+        if (distance > dmax) {
+            return 0.0; // Aucune transmission au-delà de la distance maximale
+        }
+        return Math.max(0, p0 * (1 - distance / dmax));
+    }
+
     public void mettreAJourEtat(Maladie maladie) {
         Random random = new Random();
         switch (etat) {

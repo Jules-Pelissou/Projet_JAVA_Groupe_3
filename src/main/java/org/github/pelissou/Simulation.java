@@ -13,15 +13,15 @@ public class Simulation {
         this.dmax = dmax;
     }
 
-    public void lancerSimulation(int nbCycles, boolean campagneVaccination, int cycleVaccination, int doses) {
+    public void lancerSimulation(int nbCycles, boolean introductionVariant, int cycleIntroductionVariant, String nomVariant) {
         for (int i = 0; i < nbCycles; i++) {
             cycleActuel++;
             System.out.println("Cycle " + cycleActuel);
 
-            // Campagne de vaccination si activée et au bon cycle
-            if (campagneVaccination && cycleActuel == cycleVaccination) {
-                population.campagneVaccination(doses);
-                System.out.println("Campagne de vaccination appliquée (doses : " + doses + ").");
+            // Introduction d'un variant si activée et au bon cycle
+            if (introductionVariant && cycleActuel == cycleIntroductionVariant) {
+                maladie.activerVariant(nomVariant);
+                System.out.println("Variant activé : " + nomVariant);
             }
 
             // Propagation de la maladie
@@ -42,10 +42,10 @@ public class Simulation {
         long infectes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.INFECTE).count();
         long gueris = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.GUERI).count();
         long decedes = population.getIndividus().stream().filter(i -> i.getEtat() == Etat.DECEDE).count();
-        long immunises = population.getIndividus().stream().filter(Individu::isImmunise).count();
 
-        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes + ", Immunisés : " + immunises);
+        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes);
     }
 }
+
 
 

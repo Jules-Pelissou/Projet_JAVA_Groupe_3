@@ -1,10 +1,10 @@
 package org.github.pelissou;
 
 public enum TypePersonne {
+    IMMUNISEE(0),
     SENSIBLE(0.3),
     NEUTRE(0.2),
-    RESISTANTE(0.1),
-    IMMUNISEE(0);
+    RESISTANTE(0.1);
 
     private final double tauxTransmission;
 

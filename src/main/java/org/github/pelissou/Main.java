@@ -4,8 +4,10 @@ package org.github.pelissou;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        Population p1 = new Population(10,10,50,50,35);
+        Population p1 = new Population(10,10,100,25,50);
         System.out.println(p1.getEtatPersonneLisible());
+        System.out.println(p1.getEtatPersonnes());
+        System.out.println(p1);
         /*
          * 3.1 Exemple de test
          * En guise de test initial, vous pourrez tenter de simuler la propagation d’un

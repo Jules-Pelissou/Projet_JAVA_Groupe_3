@@ -21,12 +21,11 @@ public class Population {
 
         // Défini les pourcentages globaux
         int pourcentageType = 100;
-        int pourcentageEtat = 100;
-        int pourcentageVaccin = 100;
 
-        // Création du nombre de personnes pour les pourcentages de Malades
-        int nbPersonnesMalades = (pourcentageEtat * nbPersonne) / 100;
-        int nbPersonnesAccesVaccin = (pourcentageVaccin * nbPersonne) / 100;
+
+        // Création du nombre de personnes pour les pourcentages d'accès au vaccin & de personnes malades
+        int nbPersonnesAccesVaccin = (tauxAccesVaccin * nbPersonne) / 100;
+        int nbPersonnesMalades = (tauxMalade * nbPersonne) / 100;
 
         this.personnes = new ArrayList<>();
 
@@ -41,13 +40,27 @@ public class Population {
         // Créé un tableau avec les taux (%ages) de personnes de chaque type à avoir
         this.tauxTypePersonne = new HashMap<TypePersonne, Integer>();
 
+        Random random = new Random();
+        int pourcentageTypeRdm = 0;
+
+
         // Pour chaque type de personnes => créé un pourcentageType random de type de personnes
         for (TypePersonne t : TypePersonne.values()){
-            Random random = new Random();
-            int pourcentageTypeRdm = random.nextInt(pourcentageType);
+
+            // Vérification que t est la dernière valeur des valeurs TypePersonne (On récup les valeurs avec .values() et l'index avec ce qui est entre [])
+            // Si c'est le dernier index (la dernière valeur a attribuer alors on donne le reste des %ages
+            if (t == TypePersonne.values()[TypePersonne.values().length - 1]){
+                pourcentageTypeRdm = pourcentageType;
+            }else if(t == TypePersonne.IMMUNISEE) {
+                pourcentageTypeRdm = Math.min(5, pourcentageType);
+            }else{
+                    pourcentageTypeRdm = random.nextInt(pourcentageType);
+            }
             tauxTypePersonne.put(t, pourcentageTypeRdm);
             pourcentageType -= pourcentageTypeRdm;
+            System.out.println(tauxTypePersonne);
         }
+
 
         /*
          *   Pour chaques valeurs dans le dictionnaire TypePersonnes / pourcentageType
@@ -74,30 +87,46 @@ public class Population {
                 personneParType.get(entry.getKey()).add(p);
             }
         }
-
         // Ici personneParType contient logiquement toutes les personnes créées triées par type de personnes
-
-        // Ajout des accès aux vaccins
-        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()){
-            for (int i = 0; i < nbPersonnesAccesVaccin/4; i++) {
-                int index = (int)(Math.random() * entry.getValue().size());
-                entry.getValue().get(index).setAccesVaccin(true);
-            }
-        }
-
-        // Ajout des états
-        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
-            for (int i = 0; i < nbPersonnesMalades /3; i++) {
-                int index = (int)(Math.random() * entry.getValue().size());
-                entry.getValue().get(index).setEtat(Etat.MALADE);
-            }
-        }
 
         // Ajout de toute la population dans une même liste
 
         for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
             personnes.addAll(entry.getValue());
         }
+
+        // Ajout des gens malades
+
+        ArrayList<Integer> indicePersonnesMalades = new ArrayList<>();
+        for (int i = 0; i < personnes.size(); i++) {
+            indicePersonnesMalades.add(i);
+        }
+
+        for (int i = 0; i < nbPersonnesMalades; i++) {
+
+            int randomIndex = random.nextInt(indicePersonnesMalades.size());
+            int index = indicePersonnesMalades.get(randomIndex);
+
+            if (personnes.get(index).getTypePersonne() == TypePersonne.IMMUNISEE) {
+                i--;
+            } else {
+                personnes.get(index).setEtat(Etat.MALADE);
+                indicePersonnesMalades.remove(randomIndex);
+            }
+        }
+
+        // Ajout des accès au vaccin
+
+        ArrayList<Integer> indicePersonnesAccesVaccin = new ArrayList<>();
+        for (int i = 0; i < personnes.size(); i++) {
+            indicePersonnesAccesVaccin.add(i);
+        }
+        for (int i = 0; i < nbPersonnesAccesVaccin; i++) {
+            // Retire l'index utilisé de la liste des indexs pour éviter de donner l'accès 2 fois à la même personne
+            int index = indicePersonnesAccesVaccin.remove(0);
+            personnes.get(index).setAccesVaccin(true);
+        }
+
 
         this.tailleLigne = tailleLigne;
         this.tailleColonne = tailleColonne;

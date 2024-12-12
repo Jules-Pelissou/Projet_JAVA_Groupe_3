@@ -52,6 +52,9 @@ public class Personne {
     public void setEtat(Etat etat) {
         this.etat = etat;
     }
+    public TypePersonne getTypePersonne() {
+        return typePersonne;
+    }
 
     // Override méthote toString
     @Override

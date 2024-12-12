@@ -5,7 +5,7 @@ public class Main {
         Population population = new Population(10, 10, 100, 50, 50); // 100 individus dans un espace 10x10
 
         System.out.println(population.getEtatPersonneLisible());
-        /*
+
         Maladie maladie = new Maladie(0.3, 2, 0.4, 0.1, 3); // Maladie avec caractéristiques de base
         double dmax = 10.0; // Distance maximale de transmission
 
@@ -20,6 +20,7 @@ public class Main {
 
         // Simulation avec une campagne de vaccination au 5ème cycle, en une dose
         simulation.lancerSimulation(10, true, 6, 1, true, 3, "Delta", 0.5, 0.3);
-        */
+
+        System.out.println(population.getEtatPersonneLisible());
     }
 }

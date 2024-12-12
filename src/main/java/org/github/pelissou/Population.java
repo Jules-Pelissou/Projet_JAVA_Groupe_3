@@ -10,8 +10,6 @@ public class Population {
     private ArrayList<Personne> personnes;
     private int tailleLigne;
     private int tailleColonne;
-    private int tauxAccesVaccin;
-    private int tauxMalade;
     private HashMap<TypePersonne, Integer> tauxTypePersonne;
 
 
@@ -99,6 +97,23 @@ public class Population {
             personnes.addAll(entry.getValue());
         }
 
+        // Gestion des cases occupées
+        HashSet<Case> occupiedCases = new HashSet<>();
+
+        for (Personne personne : personnes) {
+            occupiedCases.add(personne.getPosition());
+        }
+
+        for (Personne personne : personnes){
+            Case position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
+            while (occupiedCases.contains(position)){
+                position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
+            }
+            personne.setPosition(position);
+            personne.setY(position.getColonne());
+            personne.setX(position.getLigne());
+        }
+
         this.tailleLigne = tailleLigne;
         this.tailleColonne = tailleColonne;
         
@@ -106,21 +121,46 @@ public class Population {
     // Fin du constructeur
 
 
-    public HashSet<Case> getOccupation() {
-        HashSet<Case> occupiedCases = new HashSet<>();
-        for (Personne personne : personnes) {
-            occupiedCases.add(personne.getPosition());
+    public void contaminerAleatoirement(double pourcentage) {
+        int nombreInfectes = (int) (personnes.size() * pourcentage);
+        for (int i = 0; i < nombreInfectes; i++) {
+            personnes.get(i).setEtat(Etat.MALADE);
         }
-        return occupiedCases;
     }
 
-    public void positionnerPersonne(){
-        for (Personne personne : personnes){
-            Case position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
-            while (getOccupation().contains(position)){
-                position = new Case(Math.random()*tailleLigne, Math.random()*tailleColonne);
+    public void propagerMaladie(Maladie maladie, double dmax) {
+        Random random = new Random();
+        for (Personne infecte : personnes) {
+            if (infecte.getEtat() == Etat.MALADE) {
+                for (Personne autre : personnes) {
+                    if (autre.getEtat() == Etat.NEUTRE) {
+                        double probabilite = infecte.probabiliteContagion(autre, dmax);
+                        if (random.nextDouble() < probabilite) {
+                            autre.setEtat(Etat.MALADE);
+                        }
+                    }
+                }
             }
-            personne.setPosition(position);
+        }
+    }
+
+    public void campagneVaccination(int doses) {
+        for (Personne personne : personnes) {
+            if (personne.hasAccesVaccin() && !personne.isImmunise()) {
+                personne.vacciner(doses);
+            }
+        }
+    }
+
+    public void appliquerComportements(double pourcentageMasques, double pourcentageDistanciation) {
+        Random random = new Random();
+        for (Personne personne : personnes) {
+            double chance = random.nextDouble();
+            if (chance < pourcentageMasques) {
+                personne.setComportement(Comportement.PORT_DE_MASQUE);
+            } else if (chance < pourcentageMasques + pourcentageDistanciation) {
+                personne.setComportement(Comportement.DISTANCIATION_SOCIALE);
+            }
         }
     }
 
@@ -151,6 +191,9 @@ public class Population {
         return result;
     }
 
+    public ArrayList<Personne> getPersonnes(){
+        return personnes;
+    }
 
 
     // Override méthode toString

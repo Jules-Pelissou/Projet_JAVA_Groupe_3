@@ -1,29 +1,65 @@
 package org.github.pelissou;
 
-public class Maladie {
-    protected float tauxTransmissionIni;
-    protected int periodeIncubation;
-    private float probaGuerison;
-    private float probaDeces;
-    private double distanceMax;
-    private static int cycles;
-    private static double tauxTransmission;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Maladie(float tauxTransmissionIni, int periodeIncubation, float probaGuerison, float probaDeces,
-            double distanceMax, int cycles) {
-        this.tauxTransmissionIni = tauxTransmissionIni;
+public class Maladie {
+    private double tauxTransmission;
+    private int periodeIncubation;
+    private double probaGuerison;
+    private double probaDeces;
+    private int dureeResistance;
+    private List<Variant> variants;
+    private Variant variantActuel;
+
+    public Maladie(double tauxTransmission, int periodeIncubation, double probaGuerison, double probaDeces, int dureeResistance) {
+        this.tauxTransmission = tauxTransmission;
         this.periodeIncubation = periodeIncubation;
         this.probaGuerison = probaGuerison;
         this.probaDeces = probaDeces;
-        this.distanceMax = distanceMax;
-        Maladie.cycles = cycles;
+        this.dureeResistance = dureeResistance;
+        this.variants = new ArrayList<>();
+        this.variantActuel = null;
     }
 
-    public static int getCycles() {
-        return cycles;
+    public void ajouterVariant(Variant variant) {
+        variants.add(variant);
     }
 
-    public double calculProbaContagion(Case c1, Case c2) {
-        return Math.max(0, tauxTransmissionIni * (1 - Population.calculDistance(c1, c2) / distanceMax));
+    public void activerVariant(String nomVariant) {
+        for (Variant variant : variants) {
+            if (variant.getNom().equalsIgnoreCase(nomVariant)) {
+                variantActuel = variant;
+                this.tauxTransmission = variant.getTauxTransmission();
+                this.periodeIncubation = variant.getPeriodeIncubation();
+                this.probaGuerison = variant.getProbaGuerison();
+                this.probaDeces = variant.getProbaDeces();
+                break;
+            }
+        }
+    }
+
+    public double getTauxTransmission() {
+        return tauxTransmission;
+    }
+
+    public int getPeriodeIncubation() {
+        return periodeIncubation;
+    }
+
+    public double getProbaGuerison() {
+        return probaGuerison;
+    }
+
+    public double getProbaDeces() {
+        return probaDeces;
+    }
+
+    public Variant getVariantActuel() {
+        return variantActuel;
+    }
+
+    public int getDureeResistance() {
+        return dureeResistance;
     }
 }

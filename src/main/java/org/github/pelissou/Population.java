@@ -25,9 +25,16 @@ public class Population {
         int pourcentageTypeRdm = 0;
 
 
+        int nbPersonnesAccesVaccin=0;
+
         // Création du nombre de personnes pour les pourcentages de Malades
-        int nbPersonnesAccesVaccin = (tauxAccesVaccin * nbPersonne) / 100;
+        if (tauxAccesVaccin ==100){
+            nbPersonnesAccesVaccin = nbPersonne;
+        }else{
+            nbPersonnesAccesVaccin = (tauxAccesVaccin * nbPersonne) / 100;
+        }
         int nbPersonnesMalades = (tauxMalade * nbPersonne) / 100;
+        System.out.println(nbPersonnesAccesVaccin);
 
         this.personnes = new ArrayList<>();
 
@@ -94,6 +101,7 @@ public class Population {
         }
 
         // Ajout des gens malades
+
         ArrayList<Integer> indicePersonnesMalades = new ArrayList<>();
         for (int i = 0; i < personnes.size(); i++) {
             indicePersonnesMalades.add(i);
@@ -111,7 +119,6 @@ public class Population {
 
         // Ajout des accès au vaccin
 
-        for (HashMap.Entry<TypePersonne, ArrayList<Personne>> entry: personneParType.entrySet()) {
             ArrayList<Integer> indicePersonnesAccesVaccin = new ArrayList<>();
             for (int i = 0; i < personnes.size(); i++) {
                 indicePersonnesAccesVaccin.add(i);
@@ -121,7 +128,6 @@ public class Population {
                 int index = indicePersonnesAccesVaccin.remove(0);
                 personnes.get(index).setAccesVaccin(true);
             }
-        }
 
         // Gestion des cases occupées
         HashSet<Case> occupiedCases = new HashSet<>();
@@ -149,13 +155,6 @@ public class Population {
     // Fin du constructeur
 
 
-    public void contaminerAleatoirement(double pourcentage) {
-        int nombreInfectes = (int) (personnes.size() * pourcentage);
-        for (int i = 0; i < nombreInfectes; i++) {
-            personnes.get(i).setEtat(Etat.MALADE);
-        }
-    }
-
     public void propagerMaladie(Maladie maladie, double dmax) {
         Random random = new Random();
         for (Personne infecte : personnes) {
@@ -174,7 +173,7 @@ public class Population {
 
     public void campagneVaccination(int doses) {
         for (Personne personne : personnes) {
-            if (personne.hasAccesVaccin() && !personne.isImmunise()) {
+            if (personne.hasAccesVaccin()) {
                 personne.vacciner(doses);
             }
         }
@@ -190,10 +189,6 @@ public class Population {
                 personne.setComportement(Comportement.DISTANCIATION_SOCIALE);
             }
         }
-    }
-
-    public static double calculDistance(Case c1, Case c2) {
-        return Math.sqrt(Math.pow(c2.getLigne() - c1.getLigne(), 2) + Math.pow(c2.getColonne() - c1.getColonne(), 2));
     }
 
     //Getters
@@ -219,10 +214,42 @@ public class Population {
         return result;
     }
 
+    public HashMap<TypePersonne, Integer> getTypePersonnes() {
+        HashMap<TypePersonne, Integer> comptePersonnesType = new HashMap<TypePersonne, Integer>();
+
+        for (TypePersonne tp : TypePersonne.values()) {
+            comptePersonnesType.put(tp, 0);
+        }
+        for (Personne personne : personnes) {
+            comptePersonnesType.put(personne.getTypePersonne(), comptePersonnesType.get(personne.getTypePersonne()) + 1);
+        }
+        return comptePersonnesType;
+    }
+
+    public String getTypePersonneLisible(){
+        HashMap<TypePersonne, Integer> comptePersonnesType = getTypePersonnes();
+        String result = "";
+        for (TypePersonne tp : comptePersonnesType.keySet()) {
+            result += tp.toString() + " " + comptePersonnesType.get(tp) + "\n";
+        }
+        return result;
+    }
+
     public ArrayList<Personne> getPersonnes(){
         return personnes;
     }
 
+    public String getMemoireType(){
+        String result = "";
+        for (Personne personne : personnes) {
+            result += personne.getMemoireEtat();
+        }
+        return result;
+    }
+
+    public int getNbPop(){
+        return personnes.size();
+    }
 
     // Override méthode toString
     @Override

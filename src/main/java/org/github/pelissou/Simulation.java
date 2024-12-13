@@ -18,6 +18,7 @@ public class Simulation {
         population.appliquerComportements(pourcentageMasques, pourcentageDistanciation);
 
         for (int i = 0; i < nbCycles; i++) {
+            System.out.println(population.getTypePersonneLisible());
             cycleActuel++;
             System.out.println("Cycle " + cycleActuel);
 
@@ -44,6 +45,8 @@ public class Simulation {
             // Afficher les statistiques
             afficherStatistiques();
         }
+        System.out.println(population.getTypePersonneLisible());
+        System.out.println(population.getEtatPersonneLisible());
     }
 
     private void afficherStatistiques() {
@@ -51,8 +54,8 @@ public class Simulation {
         long infectes = population.getPersonnes().stream().filter(i -> i.getEtat() == Etat.MALADE).count();
         long gueris = population.getPersonnes().stream().filter(i -> i.getEtat() == Etat.GUERIE).count();
         long decedes = population.getPersonnes().stream().filter(i -> i.getEtat() == Etat.MORTE).count();
-        long immunises = population.getPersonnes().stream().filter(Personne::isImmunise).count();
+        long immunises = population.getPersonnes().stream().filter(i -> i.getTypePersonne() == TypePersonne.IMMUNISEE).count();
 
-        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes + ", Immunisés : " + immunises);
+        System.out.println("Sains : " + sains + ", Infectés : " + infectes + ", Guéris : " + gueris + ", Décédés : " + decedes + ", Immunisés : " + immunises + "/ " + population.getNbPop());
     }
 }

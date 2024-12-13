@@ -13,6 +13,7 @@ public class Personne {
     private double y;
     protected Case position;
     private Random rdm = new Random();
+    private TypePersonne memoireEtat;
 
     protected int cyclesResistance;
     private Comportement comportement;
@@ -31,6 +32,7 @@ public class Personne {
                 this.accesVaccin = accesVaccin;
                 this.nbVaccin = 0;
                 this.immunise = false;
+                this.memoireEtat = typePersonne;
     }
             public double calculDistance(Personne autre) {
                 double distance = Math.sqrt(Math.pow(this.x - autre.x, 2) + Math.pow(this.y - autre.y, 2));
@@ -42,6 +44,7 @@ public class Personne {
                 }
                 return distance;
             }
+
 
             public double probabiliteContagion(Personne autre, double dmax) {
                 double p0 = autre.typePersonne.getTauxTransmission();
@@ -70,6 +73,7 @@ public class Personne {
                             etat = Etat.GUERIE;
                             cyclesResistance = dureeResistanceSpecifique;
                             typePersonne = TypePersonne.RESISTANTE; // Une personne guérie devient résistante
+
                         } else if (rdm.nextDouble() < maladie.getProbaDeces()) {
                             etat = Etat.MORTE;
                         }
@@ -79,9 +83,14 @@ public class Personne {
                         // Réduit les cycles de résistance
                         if (cyclesResistance > 0) {
                             cyclesResistance--;
-                        } else {
+                        } else if (typePersonne == TypePersonne.IMMUNISEE){
+                            etat = Etat.NEUTRE;
+                        } else if (memoireEtat == TypePersonne.RESISTANTE) {
                             etat = Etat.NEUTRE; // Retour à l'état sain après la période de résistance
-                            typePersonne = TypePersonne.NEUTRE; // Redevient neutre après la résistance
+                            typePersonne = memoireEtat; // Redevient Resistant après la résistance
+                        }else{
+                            etat = Etat.NEUTRE; // Retour à l'état sain après la période de résistance
+                            typePersonne = memoireEtat; // Redevient l'état précédent après la résistance
                         }
                         break;
 
@@ -91,19 +100,24 @@ public class Personne {
             }
 
             public void vacciner(int doses) {
-                if (!accesVaccin || immunise) return; // Pas d'effet si pas d'accès ou déjà immunisé
+                if (!accesVaccin || typePersonne == TypePersonne.IMMUNISEE || etat == Etat.MORTE) return; // Pas d'effet si pas d'accès ou déjà immunisé
 
                 nbVaccin += doses;
 
                 if (nbVaccin == 1) {
                     if (typePersonne == TypePersonne.SENSIBLE || typePersonne == TypePersonne.NEUTRE) {
                         typePersonne = TypePersonne.RESISTANTE; // Rend résistants les sensibles et neutres
+                    }else if(memoireEtat == TypePersonne.RESISTANTE){
+                        typePersonne = TypePersonne.IMMUNISEE; // Rend les résistants immunisés
                     }
                 }
 
                 if (nbVaccin >= 2 || doses == 1) { // Immunisation complète pour 2 doses ou vaccination en une dose
-                    immunise = true;
-                    typePersonne = TypePersonne.RESISTANTE; // Toutes les personnes deviennent résistantes
+                    if (typePersonne == TypePersonne.SENSIBLE || typePersonne == TypePersonne.NEUTRE) {
+                        typePersonne = TypePersonne.RESISTANTE; // Rend résistants les sensibles et neutres
+                    }else if(memoireEtat == TypePersonne.RESISTANTE){
+                        typePersonne = TypePersonne.IMMUNISEE;
+                    }
                     etat = Etat.GUERIE; // Immunisées, elles sont considérées guéries
                 }
             }
@@ -163,9 +177,13 @@ public class Personne {
                 this.comportement = comportement;
             }
 
+            public TypePersonne getMemoireEtat() {
+                return memoireEtat;
+            }
+
             // Override méthote toString
             @Override
             public String toString() {
-                return "Accès au vaccin : " + accesVaccin + ", nbVaccin : " + nbVaccin + ", etat : " + etat + ", TypePersonne : " + typePersonne + ", x : "+ x + ", y : " + y ;
+                return "Accès au vaccin : " + accesVaccin + ", nbVaccin : " + nbVaccin + ", etat : " + etat + ", TypePersonne : " + typePersonne + " Memoire Etat " + memoireEtat ;
             }
 }
